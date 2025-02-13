@@ -14,7 +14,7 @@ router.post('/user', (req ,res, next) => {
     const user = new User({
         name: req.body.name,
         age: req.body.age,
-        userName: req.body.username,
+        username: req.body.username,
         password: req.body.password
     });
     user.save().then(() => {
