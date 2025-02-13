@@ -10,6 +10,7 @@ router.get('/users', (req, res, next) => {
 });
 
 router.post('/user', (req ,res, next) => {
+   console.log("create new user");
     const user = new User({
         name: req.body.name,
         age: req.body.age,
