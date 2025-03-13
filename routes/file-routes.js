@@ -6,11 +6,6 @@ const { Readable } = require("stream");
 const File = require('../models/FileModel');
 
 
-console.log("mongoose db info*********", mongoose.connection.db);
-
-mongoose.connection.on("open", () => {
-
-    console.log("after DB connected lets do file upload", mongoose.connection.db);
 let bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db);
 const storage = multer.memoryStorage();
 const upload  =   multer({storage});
@@ -48,6 +43,5 @@ catch(err){
 
 })
 
-});
 
 module.exports = router;
