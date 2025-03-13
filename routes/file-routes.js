@@ -11,7 +11,7 @@ const storage = multer.memoryStorage();
 const upload  =   multer({storage});
 router.post('/file-upload', upload.single("file"), async (req, res) => { 
 let {file} =  req;
-console.log(file);
+console.log("after file upload in server",req);
 let {fieldname, originalname, mimetype, buffer} = file
 let newFile = new File({
     filename: originalname,
