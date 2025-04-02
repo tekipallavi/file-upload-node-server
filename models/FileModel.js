@@ -1,24 +1,57 @@
-const mongoose = require('mongoose');
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+const mongoose = require("../db/db-connection");
+const { Readable } = require("stream");
+const File = require('../models/FileModel');
 
-const File = new mongoose.Schema({
-    filename: {
-        type:String,
-        required: true
-    },
-    contentType: {
-        type: String,
-        required:true
-    },
-    length: {
-        type: Number,
-        required: true
-    },
-    file: {
-        type: any,
-        required: true
-    }
-},{
-    collection: 'Files'
+
+let bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db);
+const storage = multer.memoryStorage();
+const upload  =   multer({storage});
+router.post('/file-upload', upload.single("file"), async (req, res) => { 
+let {file} =  req;
+let {fieldname, originalname, mimetype, buffer} = file
+let newFile = new File({
+    filename: originalname,
+    contentType: mimetype,
+    length: buffer.length,
+});
+
+try{
+    let uploadStream = bucket.openUploadStream(fieldname);
+    let readBuffer = new Readable();
+    readBuffer.push(buffer);
+    readBuffer.push(null);
+
+    const isUploaded = await new Promise((resolve, reject)=>{
+        readBuffer.pipe(uploadStream)
+        .on("finish", resolve("successfull"))
+        .on("error" , reject("error occured while creating stream") )
+    });
+
+   newFile.id = uploadStream.id;
+   let savedFile = await newFile.save();
+   res.send(savedFile);
+}
+
+catch(err){
+    res.send("error uploading file", err);
+ }
+    
+
 })
 
-module.exports = mongoose.model('File', File);
+router.get('/get-file', async (req, res) => {
+    console.log("query", req.query);
+    const fileId = req.query.id;
+    let downloadStream = bucket.openDownloadStream(new mongoose.Types.ObjectId(fileId));
+    downloadStream.on('file', file => {
+        res.set('Content-Type', file.contentType);
+    });
+
+    downloadStream.pipe(res);
+});
+
+
+module.exports = router;
