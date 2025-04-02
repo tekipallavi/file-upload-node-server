@@ -12,6 +12,10 @@ const File = new mongoose.Schema({
     length: {
         type: Number,
         required: true
+    },
+    id : {
+        type: String,
+        required: true
     }
 },{
     collection: 'Files'
