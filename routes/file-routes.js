@@ -30,8 +30,9 @@ try{
         .on("finish", resolve("successfull"))
         .on("error" , reject("error occured while creating stream") )
     });
-    console.log("upload stream", uploadStream, isUploaded)
+    console.log("upload stream", uploadStream.bufToStore)
    // newFile.id = uploadStream.id;
+   newFile.file = bufToStore;
    let savedFile = await newFile.save();
    res.send(savedFile);
 }
