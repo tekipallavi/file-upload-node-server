@@ -38,17 +38,21 @@ try{
 
 catch(err){
     res.send("error uploading file", err);
- }   
+ }
+    
 
 })
 
 router.get('/get-file', async (req, res) => {
-    const fileId = req.params.id;
+    console.log("query", req.query);
+    console.log("params", req.params);
+    const fileId = req.query.id;
     let file = await File.findById(fileId);
     if(file){
-        res.send(file);
+        res.send(file);        
     }else{
-        res.status(404).send();
+        console.log("the error", file)
+        res.send(401);
     }    
 })
 
