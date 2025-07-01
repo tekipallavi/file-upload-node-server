@@ -53,7 +53,7 @@ router.get('/get-file', async (req, res) => {
     downloadStream.pipe(res);
 });
 
-router.get('get-all-files', (req, res, next) => {
+router.get('/get-all-files', (req, res, next) => {
    File.find().then( files => {
        console.log("all files from DB", files);
        res.send(files);
