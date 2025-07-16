@@ -60,5 +60,14 @@ router.get('/get-all-files', (req, res, next) => {
    })
 })
 
+router.get('/get-all-file-data', async (req, res, next) => {
+    let cursor = bucket.find({});
+    let files = [];
+    for await (const doc of cursor ){
+        files.push(doc);
+    }
+    res.send(files);
+ })
+
 
 module.exports = router;
