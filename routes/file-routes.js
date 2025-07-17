@@ -68,12 +68,20 @@ router.get('/get-all-file-data', async (req, res, next) => {
  })
 
  router.post('/rename-file',  async (req, res, next) => {
-   console.log("the body in rename ****", req, req.id);
    File.updateOne({id: req.body.id}, {filename: req.body.newFileName}).then((data) => {
         res.send(data);
    }, err => {
         res.status(500).send(err);
    });   
  })
+
+ router.delete('/delete-file/:id',  (req, res, next) => {
+    console.log("the body in delete ****", req.params.id);
+    File.deleteOne({id:req.params.id}).then((data) => {
+         res.send(data);
+    }, err => {
+         res.status(500).send(err);
+    });   
+  })
 
 module.exports = router;
