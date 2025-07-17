@@ -14,6 +14,7 @@ const app = express();
 /* added for twitter code */
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.json()); // To parse JSON request bodies
 const twitterClient = new TwitterApi({
   appKey: process.env.TWITTER_API_KEY,
   appSecret: process.env.TWITTER_API_SECRET,
