@@ -67,8 +67,8 @@ router.get('/get-all-file-data', async (req, res, next) => {
     res.send(files);
  })
 
- router.post('/rename-file',  (req, res, next) => {
-   console.log("the body in rename ****", req.body.id, typeof req.body, JSON.stringify(req.body));
+ router.post('/rename-file',  async (req, res, next) => {
+   console.log("the body in rename ****", req, req.id);
    File.updateOne({id: req.body.id}, {filename: req.body.newFileName}).then((data) => {
         res.send(data);
    }, err => {
