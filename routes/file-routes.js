@@ -69,5 +69,9 @@ router.get('/get-all-file-data', async (req, res, next) => {
     res.send(files);
  })
 
+router.post('/rename-file', async (req,res,next) => {
+   let data = await File.updateOne({id: req.body.id}, {filename: req.body.newFileName});
+   res.send(data);
+ })
 
 module.exports = router;
