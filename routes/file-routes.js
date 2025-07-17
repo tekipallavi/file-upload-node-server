@@ -43,7 +43,6 @@ catch(err){
 })
 
 router.get('/get-file', async (req, res) => {
-    console.log("query", req.query);
     const fileId = req.query.id;
     let downloadStream = bucket.openDownloadStream(new mongoose.Types.ObjectId(fileId));
     downloadStream.on('file', file => {
@@ -55,7 +54,6 @@ router.get('/get-file', async (req, res) => {
 
 router.get('/get-all-files', (req, res, next) => {
    File.find().then( files => {
-       console.log("all files from DB", files);
        res.send(files);
    })
 })
@@ -69,9 +67,13 @@ router.get('/get-all-file-data', async (req, res, next) => {
     res.send(files);
  })
 
-router.post('/rename-file', async (req,res,next) => {
-   let data = await File.updateOne({id: req.body.id}, {filename: req.body.newFileName});
-   res.send(data);
+ router.post('/rename-file',  (req, res, next) => {
+   console.log("the body in rename ****", req.body);
+   File.updateOne({id: req.body.id}, {filename: req.body.newFileName}).then((data) => {
+        res.send(data);
+   }, err => {
+        res.status(500).send(err);
+   });   
  })
 
 module.exports = router;
