@@ -2,7 +2,7 @@
 const { InferenceClient } = require('@huggingface/inference');
 const express = require('express');
 const router = express.Router();
-const { encrypt, decrypt } = require('../routes/key-decryption'); // Import encryption/decryption functions
+const { encrypt, decrypt } = require('../utils/key-decryption');
 
 let api_key = decrypt(process.env.HUGGING_FACE_API_KEY, 'pallavi');
 const hf = new InferenceClient(api_key); 
