@@ -44,10 +44,12 @@ mongoose.connection.on("open", () => {
 console.log("after DB connected lets do file upload", mongoose.connection.db);
 const authRoutes = require('./routes/auth-routes');
 const fileRoutes = require('./routes/file-routes');
+const aiRoutes = require('./routes/ai-routes');
 //app.use(cors());
 //app.use(bodyParser.json());
 app.use(authRoutes);
 app.use(fileRoutes);
+app.use(aiRoutes);
 });
 
 app.listen(process.env.PORT || 3001, () => {

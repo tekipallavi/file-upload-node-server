@@ -1,0 +1,2 @@
+// do not show node modules in git
+node_modules/
