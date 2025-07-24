@@ -2,8 +2,10 @@
 const { InferenceClient } = require('@huggingface/inference');
 const express = require('express');
 const router = express.Router();
+const { encrypt, decrypt } = require('../routes/key-decryption'); // Import encryption/decryption functions
 
-const hf = new InferenceClient('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'); // Use environment variable for API key
+let api_key = decrypt(process.env.HUGGING_FACE_API_KEY, 'pallavi');
+const hf = new InferenceClient(api_key); 
 
 router.get('/get-summary', async (req, res) => {
     
@@ -116,6 +118,8 @@ ${JSON.stringify(data)}
                 max_length: 100, // Limit the response length
             },
         });
+
+        console.log(response);
         // Extract summary text from response
         res.send(response.summary_text ? response.summary_text : response);
             
