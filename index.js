@@ -41,7 +41,6 @@ app.post('/tweet', async (req, res) => {
 /* added for twitter code */
 
 mongoose.connection.on("open", () => {    
-console.log("after DB connected lets do file upload", mongoose.connection.db);
 const authRoutes = require('./routes/auth-routes');
 const fileRoutes = require('./routes/file-routes');
 const aiRoutes = require('./routes/ai-routes');

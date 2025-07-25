@@ -92,13 +92,15 @@ router.get('/get-summary', async (req, res) => {
         }
       ];
 
-
-
-const prompt = `
-You are a social media manager and football analyst.
+const pt = `You are a social media manager and football analyst.
 Given the following football match events, do two things:
 1. Write a catchy tweet (min 800 characters) summarizing the match highlights for fans.
-2. Provide a brief analysis (2-3 sentences) of the match based on the events.
+2. Provide a brief analysis (2-3 sentences) of the match based on the events.`;
+
+const promptText = req.query.prompt || pt;
+
+const prompt = `
+${promptText}
 
 Events:
 ${JSON.stringify(data)}
