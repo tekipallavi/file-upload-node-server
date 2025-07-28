@@ -40,9 +40,14 @@ router.post("/login", async (req, res, next) => {
  * The user name password are based on some combinationof random names taken from AI
  */
 router.put("/create-users", async (req, res) => {
-  const userData = await generateUserData(300, User);
-  const execStats = await User.bulkSave(userData);
-  res.send(execStats);
+  try {
+    const userData = await generateUserData(300, User);
+    const execStats = await User.bulkSave(userData);
+    res.send(execStats);
+  } catch (error) {
+    console.error("Error creating users:", error);
+    return res.status(500).send("Internal Server Error");
+  }
 });
 
 /**
@@ -50,8 +55,13 @@ router.put("/create-users", async (req, res) => {
  */
 
 router.delete("/delete-all-users", async (req, res) => {
-  const result = await User.deleteMany({});
-  res.send(result);
+  try {
+    const result = await User.deleteMany({});
+    res.send(result);
+  } catch (error) {
+    console.error("Error deleting users:", error);
+    return res.status(500).send("Internal Server Error");
+  }
 });
 
 module.exports = router;
