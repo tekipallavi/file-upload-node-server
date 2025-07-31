@@ -16,6 +16,11 @@ const File = new mongoose.Schema({
     id : {
         type: String,
         required: true
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 },{
     collection: 'Files'
