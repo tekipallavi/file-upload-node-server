@@ -10,14 +10,16 @@ let bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db);
 const storage = multer.memoryStorage();
 const upload  =   multer({storage});
 router.post('/file-upload', upload.single("file"), async (req, res) => { 
-let {file} =  req;
+    console.log("file request in upload ", req, req.body, req.userId);
+    console.log("user id********", req.userId);
+let {file, userId} =  req;
 let {fieldname, originalname, mimetype, buffer} = file
 let newFile = new File({
     filename: originalname,
     contentType: mimetype,
     length: buffer.length,
+    userId
 });
-
 try{
     let uploadStream = bucket.openUploadStream(fieldname);
     let readBuffer = new Readable();
