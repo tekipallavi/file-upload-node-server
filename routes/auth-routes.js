@@ -74,7 +74,7 @@ router.get("/user-pagination", async (req, res) => {
   try {
     const users = (req.query.search) ? await User.find({$or: [{name: search}, {username: search}]}).skip(skip).limit(limit) :
                                        await User.find().skip(skip).limit(limit);
-    const totalUsers = users.length;
+    const totalUsers =  await User.countDocuments();
     res.status(200).json({
       users,
       totalUsers,
