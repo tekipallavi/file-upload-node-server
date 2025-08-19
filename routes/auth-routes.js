@@ -64,26 +64,33 @@ router.delete("/delete-all-users", async (req, res) => {
   }
 });
 
-
 router.get("/user-pagination", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit;
-  const search =  req.query.search || null;
+  const search = req.query.search || null;
   // this search text can be name or username - find should check with either name or user name
   try {
-    const users = (req.query.search) ? await User.find({$or: [{name: search}, {username: search}]}).skip(skip).limit(limit) :
-                                       await User.find().skip(skip).limit(limit);
-    const totalUsers =  await User.countDocuments();
+    const users = req.query.search
+      ? await User.find({
+          $or: [
+            { name: { $regex: search, $options: "i" } },
+            { username: { $regex: search, $options: "i" } },
+          ],
+        })
+          .skip(skip)
+          .limit(limit)
+      : await User.find().skip(skip).limit(limit);
+    const totalUsers = await User.countDocuments();
     res.status(200).json({
       users,
       totalUsers,
       totalPages: Math.ceil(totalUsers / limit),
-      currentPage: page
-    })
-  }catch(error){
-    res.status(500).json({error});
+      currentPage: page,
+    });
+  } catch (error) {
+    res.status(500).json({ error });
   }
-})
+});
 
 module.exports = router;
