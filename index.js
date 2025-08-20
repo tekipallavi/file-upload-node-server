@@ -51,36 +51,10 @@ mongoose.connection.on("open", () => {
   app.use(aiRoutes);
 });
 
-/* kafka */
-const { Kafka } = require('kafkajs');
 
-const kafka = new Kafka({
-  clientId: 'my-node-app',
-  brokers: ['api-0d2da3de-fdff-4edd-a16e-6663d67e2434.kafka.discoveryv2.prod-s.eastus.azure.warpstream.com:9092'], // Replace with your Kafka broker
-  ssl: true, // Enable if your cluster uses SSL
-  sasl: {
-    mechanism: 'plain', // or 'scram-sha-256', 'scram-sha-512'
-    username: 'ccun_624aa0df5f86b269ed418336a9647f126cfa299b6fd582f53649c20b19fa98a7',
-    password: 'ccp_287d8fd367a76379b318100f9a1db1f74044bb2ce651267ca1ead61ab09a8622',
-  },
-});
-
-
-const producer = kafka.producer();
-
-const runProducer = async () => {
-  await producer.connect();
-  await producer.send({
-    topic: 'teki',
-    messages: [{ value: 'Hello from Node.js!' }],
-  });
-  await producer.disconnect();
-};
-
-runProducer().catch(console.error);
-/* kafka */
 
 app.listen(process.env.PORT || 3001, () => {
   console.log("start listening!!");
 });
+
 
