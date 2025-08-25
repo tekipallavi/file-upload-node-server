@@ -23,6 +23,7 @@ module.exports = {
           "redis-12862.crce182.ap-south-1-1.ec2.redns.redis-cloud.com",
         REDIS_PORT: 12862,
         REDIS_DEFAULT_EXPIRY: 600,
+        JWTSecret: "pallavihotlady"
       },
       env_production: {
         NODE_ENV: "production",
@@ -42,6 +43,7 @@ module.exports = {
           "redis-12862.crce182.ap-south-1-1.ec2.redns.redis-cloud.com",
         REDIS_PORT: 12862,
         REDIS_DEFAULT_EXPIRY: 600,
+        JWTSecret: "pallavihotlady"
       },
     },
   ],
