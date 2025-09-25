@@ -17,7 +17,7 @@ const {
 } = require("./middlewares/redis/redis-middleware");
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({credentials:true, origin: 'http://localhost:3000'}));
 app.use(express.json()); // To parse JSON request bodies
 connectRedis().then(() => app.use(redisMiddleware));
 

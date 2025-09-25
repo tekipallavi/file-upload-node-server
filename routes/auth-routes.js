@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/UserModel");
 const { generateUserData } = require("../utils/user-generation");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 router.get("/users", (req, res, next) => {
   User.find().then((users) => {
@@ -9,29 +12,46 @@ router.get("/users", (req, res, next) => {
   });
 });
 
-router.post("/user", (req, res, next) => {
+router.post("/user", async (req, res, next) => {
   console.log("create new user", req, req.body);
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const user = new User({
     name: req.body.name,
     age: req.body.age,
     username: req.body.username,
-    password: req.body.password,
+    password: hashedPassword,
+    isAdmin: req.body.isAdmin || false
   });
-  user.save().then(() => {
-    res.status(200).send();
-  });
+  try{
+     await user.save();
+     res.status(200).send('user created!!')
+  }catch(error){
+    console.error("Error creating user:", error);
+    return res.status(500).send("Internal Server Error");
+  }
+
 });
 
 router.post("/login", async (req, res, next) => {
-  const user = await User.findOne({
-    username: req.body.username,
-    password: req.body.password,
-  });
-  if (user) {
-    res.status(200).send(user);
-  } else {
+  const {username, password} = req.body;
+  const user = await User.findOne({username});
+  if(!user){
     res.status(404).send();
   }
+  const isPasswordMatch = await bcrypt.compare(password, user.password);
+  if(!isPasswordMatch){
+    res.status(404).send();
+  }
+  const token = jwt.sign({id: user._id, username: user.username}, process.env.JWTSecret, {
+    expiresIn: '1h'
+  });
+  res.cookie('token', token, {httpOnly: true,
+    maxAge: 3600000, // 1 hour
+    strict:false,
+    sameSite: 'lax',
+    secure: false
+  });
+  res.status(200).send();
 });
 
 /**
