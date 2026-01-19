@@ -206,7 +206,7 @@ const constructPromptForNewsSummary = news => {
   return prompt;
 }
 
-router.get('/summarize-news', async (req, res) => {
+router.get('/summarize-news/:celebrity', async (req, res) => {
   const celebrity = req.params.celebrity || 'zendaya';
   try {
     const news = await getCelebrityNews(celebrity);
