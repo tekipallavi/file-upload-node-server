@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const { encrypt, decrypt } = require('../utils/key-decryption');
 // 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
+// db3d67ce45cc4b63b2e7144774b9042e
 let api_key = decrypt(process.env.HUGGING_FACE_API_KEY, 'pallavi');
 const hf = new InferenceClient(api_key); 
 
