@@ -19,7 +19,7 @@ const {
 app.use(bodyParser.json());
 app.use(cors({credentials:true, origin: 'http://localhost:3000'}));
 app.use(express.json()); // To parse JSON request bodies
-connectRedis().then(() => app.use(redisMiddleware));
+//connectRedis().then(() => app.use(redisMiddleware));
 
 /* added for twitter code */
 
