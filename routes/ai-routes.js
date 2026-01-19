@@ -128,7 +128,7 @@ ${JSON.stringify(data)}
 });
 
 router.get('/get-ai-summary', async (req, res) => {
-  const prompt = req.prompt || 'Who won the AFCON semi-final match played last week?';
+  const prompt = req.prompt || 'Analyze all the charge data and give a good analysis of the offence history for Erling Haaland';
 
   if (!prompt) {
     res.status(500).send('Invalid prompt text');
@@ -213,7 +213,7 @@ router.get('/summarize-news/:celebrity', async (req, res) => {
     if (news) {
       const prompt = constructPromptForNewsSummary(news);
       const response = await getAISummary(prompt);
-      res.status(200).send(response);
+      res.status(200).send(news);
     } else {
       throw new Error('No news articles found');
     }
